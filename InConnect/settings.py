@@ -77,8 +77,15 @@ WSGI_APPLICATION = 'InConnect.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':   'django.db.backends.mysql',
+        'NAME':     'giokharc_inconnect',
+        'USER':     'giokharc_root',
+        'PASSWORD': '12345678',
+        'HOST':     'giokhar.com',
+        'PORT':     '3306',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
     }
 }
 
