@@ -14,6 +14,10 @@ from rest_framework import status
 
 from messenger.serializers import *
 
+def response(sender_response):
+
+	if sender_response.lower() == "get started":
+		return "Gamarjoba"
 
 VERIFY_TOKEN = '12345678'
 PAGE_ACCESS_TOKEN = "EAAK5tc826v8BACZAudQd8vZByLNgod6W7f99ZCpZCGXAEXZAvIjvWBhAciO7eaxmTBwtpxKQJuqkU5b8ovlfSeyOGDkBDz8dGfQIhtCF15gytQ11wfZCUhuds2x4ceSFKYBeGyZCVPhTBnmwCWXIL3Br2c8zTzpcxgv1JGQ54x6Fofwx3C5wBMa"
@@ -73,7 +77,9 @@ class InConnectBotView(generic.View):
 					pprint(message)
 					# Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
 					# are sent as attachments and must be handled accordingly. 
-					post_facebook_message(message['sender']['id'], message['message']['text'])
+					# post_facebook_message(message['sender']['id'], message['message']['text'])
+					post_facebook_message(message['sender']['id'], response(message['message']['text']))
+
 		return HttpResponse()
 
 # Create your views here.
