@@ -1,10 +1,10 @@
 from .helper import *
 
+post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
+get_started_data = json.dumps({"get_started":[{"payload":"get_started"}]})
+status_get_started = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data = get_started_data)
 
 class InConnectBotView(generic.View):
-	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
-	get_started_data = json.dumps({"get_started":[{"payload":"get_started"}]})
-	status_get_started = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data = get_started_data)
 
 	def get(self, request, *args, **kwargs):
 		if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
