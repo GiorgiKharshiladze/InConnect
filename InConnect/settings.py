@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'lys(++_a4+yuu&^n1zw+t4thoo%uk^dh!obfrkmg6)(g(**zzv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','5e316ab4.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1','5e316ab4.ngrok.io', 'inconnectbot.herokuapp.com']
 
 
 # Application definition

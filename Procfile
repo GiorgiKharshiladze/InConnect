@@ -1,0 +1,1 @@
+web: gunicorn InConnect.wsgi --log-file
