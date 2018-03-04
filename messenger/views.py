@@ -1,4 +1,5 @@
 import json, requests, random, re
+from urllib.request import urlopen
 from pprint import pprint
 
 from django.views.decorators.csrf import csrf_exempt
