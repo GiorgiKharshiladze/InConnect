@@ -74,7 +74,7 @@ def clearDB(request, sender_id):
 			User.objects.filter(sender_id=chat['sender_one']).delete()
 			if chat['sender_two'] != None:
 				User.objects.filter(sender_id=chat['sender_two']).delete()
-				
+
 			Chat.objects.filter(id=chat['id']).delete()
 
 
@@ -113,6 +113,6 @@ def sendMessage(fbid, recieved_message):
 	user_details = requests.get(user_details_url, user_details_params).json()
 
 	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
-	response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":recieved_message}})
+	response_msg = json.dumps({"recipient":{"id":fbid},{"message":{"attachment":{"type":"template","payload":{"template_type":"button","text":"What do you want to do next?","buttons":[{"type":"web_url","url":"https://www.messenger.com","title":"Visit Messenger"}]}}}} }) #"message":{"text":recieved_message}})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
