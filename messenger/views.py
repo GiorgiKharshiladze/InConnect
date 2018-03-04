@@ -75,7 +75,7 @@ def post_facebook_message(fbid, recevied_message):
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
 
-def getConnection(sender_id):
+def getConnection(request, sender_id):
 
 	for chat in getData(request, "chats"):
 		if chat['sender_one'] == sender_id:
@@ -87,7 +87,7 @@ def getConnection(sender_id):
 
 
 def generate_message(request, message):
-	another_user_id = getConnection(message['sender']['id'])
+	another_user_id = getConnection(request, message['sender']['id'])
 	if another_user_id == None:
 		post_facebook_message(message['sender']['id'], DEFAULT_RESPONSE)
 	else:
@@ -121,7 +121,7 @@ class InConnectBotView(generic.View):
 					# are sent as attachments and must be handled accordingly. 
 					# post_facebook_message(message['sender']['id'], message['message']['text'])
 					addUser(request, message['sender']['id'], message['message']['text'])
-					addUserChat(request, message)
+					# addUserChat(request, message)
 					generate_message(request, message)
 					# post_facebook_message(message['sender']['id'], response(request, message['sender']['id'], message['message']['text']))
 
