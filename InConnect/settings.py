@@ -25,7 +25,9 @@ SECRET_KEY = 'lys(++_a4+yuu&^n1zw+t4thoo%uk^dh!obfrkmg6)(g(**zzv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','5e316ab4.ngrok.io', 'inconnectbot.herokuapp.com']
+ALLOWED_HOSTS = ['*']
+
+# mysql://b736a0c88e531d:42f0284a@us-cdbr-iron-east-05.cleardb.net/heroku_efad087ae24a098?reconnect=true
 
 
 # Application definition
@@ -78,10 +80,10 @@ WSGI_APPLICATION = 'InConnect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':   'django.db.backends.mysql',
-        'NAME':     'giokharc_inconnect',
-        'USER':     'giokharc_root',
-        'PASSWORD': '12345678',
-        'HOST':     'giokhar.com',
+        'NAME':     'heroku_efad087ae24a098',
+        'USER':     'b736a0c88e531d',
+        'PASSWORD': '42f0284a',
+        'HOST':     'us-cdbr-iron-east-05.cleardb.net',
         'PORT':     '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',
