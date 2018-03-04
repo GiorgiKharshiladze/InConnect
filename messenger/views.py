@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from messenger.serializers import *
+from .models import User
 
 def getData(request, typeOf):
 	url 		= "http://" + request.get_host() + "/api/" + typeOf +"/?format=json"
@@ -21,14 +22,23 @@ def getData(request, typeOf):
 	data		= json.loads(jsonurl.read())
 	return data
 
-def response(request, sender_response):
+def response(request, sender_id, sender_response):
+	isIn = False
+	for user in getData(request, "users"):
+		if user['sender_id'] == sender_id:
+			isIn = True
 
-	if sender_response.lower() == "get started":
-		data = getData(request, "users")
-		return data
+	if not isIn:
+		new_user = User(sender_id=sender_id, topic=sender_response)
+		new_user.save()
+
+
+
+
 
 VERIFY_TOKEN = '12345678'
 PAGE_ACCESS_TOKEN = "EAAK5tc826v8BACZAudQd8vZByLNgod6W7f99ZCpZCGXAEXZAvIjvWBhAciO7eaxmTBwtpxKQJuqkU5b8ovlfSeyOGDkBDz8dGfQIhtCF15gytQ11wfZCUhuds2x4ceSFKYBeGyZCVPhTBnmwCWXIL3Br2c8zTzpcxgv1JGQ54x6Fofwx3C5wBMa"
+DEFAULT_RESPONSE = "Please wait"
 
 jokes = { 'stupid': ["""Yo' Mama is so stupid, she needs a recipe to make ice cubes.""",
 					"""Yo' Mama is so stupid, she thinks DNA is the National Dyslexics Association."""], 
@@ -59,6 +69,12 @@ def post_facebook_message(fbid, recevied_message):
 	response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":joke_text}})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
+def generate_message(request, message):
+	another_user_id = getConnection(message['sender']['id'])
+	if another_user_id == None:
+		post_facebook_message(message['sender']['id'], DEFAULT_RESPONSE)
+	else:
+		post_facebook_message(another_user_id, message['message']['text'])
 
 class InConnectBotView(generic.View):
 
@@ -87,7 +103,8 @@ class InConnectBotView(generic.View):
 					# Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
 					# are sent as attachments and must be handled accordingly. 
 					# post_facebook_message(message['sender']['id'], message['message']['text'])
-					post_facebook_message(message['sender']['id'], response(request, message['message']['text']))
+					generate_message(request, message)
+					# post_facebook_message(message['sender']['id'], response(request, message['sender']['id'], message['message']['text']))
 
 		return HttpResponse()
 
