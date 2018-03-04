@@ -18,8 +18,9 @@ from .models import User, Chat
 
 VERIFY_TOKEN = '12345678'
 PAGE_ACCESS_TOKEN = "EAAK5tc826v8BACZAudQd8vZByLNgod6W7f99ZCpZCGXAEXZAvIjvWBhAciO7eaxmTBwtpxKQJuqkU5b8ovlfSeyOGDkBDz8dGfQIhtCF15gytQ11wfZCUhuds2x4ceSFKYBeGyZCVPhTBnmwCWXIL3Br2c8zTzpcxgv1JGQ54x6Fofwx3C5wBMa"
-DEFAULT_RESPONSE_FOR_WAIT = "Please wait"
-DEFAULT_RESPONSE_FOR_START = "You can start your conversation"
+DEFAULT_RESPONSE_FOR_WAIT = "Please wait. No chatroom associated with this topic yet. "
+DEFAULT_RESPONSE_FOR_START = "You can start your conversation."
+DEFAULT_RESPONSE_FOR_END = "Your conversation has ended."
 
 def getData(request, type_of):
 	url 		= "http://" + request.get_host() + "/api/" + type_of +"/?format=json"
@@ -71,6 +72,10 @@ def clearDB(request, sender_id):
 
 	for chat in getData(request, "chats"):
 		if chat['sender_one'] == sender_id or chat['sender_two'] == sender_id:
+			
+			sendMessage(chat['sender_one'],DEFAULT_RESPONSE_FOR_END)
+			sendMessage(chat['sender_two'],DEFAULT_RESPONSE_FOR_END)
+
 			User.objects.filter(sender_id=chat['sender_one']).delete()
 			if chat['sender_two'] != None:
 				User.objects.filter(sender_id=chat['sender_two']).delete()
