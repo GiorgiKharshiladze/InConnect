@@ -89,7 +89,11 @@ def generateMessage(request, message):
 	if another_user_id == None:
 		sendMessage(message['sender']['id'], DEFAULT_RESPONSE_FOR_WAIT)
 	else:
-		sendMessage(another_user_id, message['message']['text'])
+		if getTopic(message['sender']['id']) == message['message']['text']:
+			sendMessage(another_user_id, DEFAULT_RESPONSE_FOR_START)
+			sendMessage(message['sender']['id'], DEFAULT_RESPONSE_FOR_START)
+		else:
+			sendMessage(another_user_id, message['message']['text'])
 
 def getConnection(request, sender_id):
 
