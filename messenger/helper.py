@@ -58,9 +58,9 @@ def addUserChat(request, message):
 	userIsInChat = False
 
 	for chat in getData(request, "chats"):
-		if chat['status'] == False and getTopic(sender_id) == chat['topic'] and chat['sender_one'] != sender_id:
-			if chat['sender_one'] == sender_id:
+		if chat['sender_one'] == sender_id or chat['sender_two'] == sender_id:
 				userIsInChat = True
+		if chat['status'] == False and getTopic(sender_id) == chat['topic'] and chat['sender_one'] != sender_id:
 			setChatUser(chat['id'], sender_id)
 			return
 
