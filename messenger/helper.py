@@ -122,6 +122,6 @@ def sendMessage(fbid, recieved_message):
 	user_details = requests.get(user_details_url, user_details_params).json()
 
 	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
-	response_msg = json.dumps({"recipient":{"id":fbid},"message":{"quick_replies":[{"content_type":"text","title":"Next Image","payload":"YOUR_DEFINED_PAYLOAD_FOR_NEXT_IMAGE"}]}}) #"message":{"text":recieved_message}})
+	response_msg = json.dumps({"recipient":{"id":fbid},"message":{"quick_replies":[{"content_type":"text","title":"Next Image","payload":"gio"}, {"content_type":"text","title":"Next Move","payload":"giorgi"}]}}) #"message":{"text":recieved_message}})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
