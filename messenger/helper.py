@@ -116,14 +116,11 @@ def generateTemplate(type, fbid, received_message):
 def sendMessage(fbid, received_message):
 	# Remove all punctuations, lower case the text and split it based on space
 	
-	get_started_data = json.dumps({"setting_type":"call_to_actions","thread_state":"new_thread","call_to_actions":[{"payload":"get_started"}]})
-	
 	user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
 	user_details_params = {'fields':'first_name,last_name,profile_pic', 'access_token':PAGE_ACCESS_TOKEN}
 	user_details = requests.get(user_details_url, user_details_params).json()
 
 	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
 	response_msg = generateTemplate("reply", fbid, received_message) #"message":{"text":received_message}})
-	status_get_started = requests.post(post_message_url, headers={"Content-Type": "application/json", data = get_started_data})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())

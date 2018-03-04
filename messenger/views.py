@@ -5,6 +5,9 @@ class InConnectBotView(generic.View):
 
 	def get(self, request, *args, **kwargs):
 		if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
+			post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
+			get_started_data = json.dumps({"setting_type":"call_to_actions","thread_state":"new_thread","call_to_actions":[{"payload":"get_started"}]})
+			status_get_started = requests.post(post_message_url, headers={"Content-Type": "application/json", data = get_started_data})
 			return HttpResponse(self.request.GET['hub.challenge'])
 		else:
 			return HttpResponse('Error, invalid token')
