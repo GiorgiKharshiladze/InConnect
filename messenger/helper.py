@@ -67,6 +67,18 @@ def addUserChat(request, message):
 	if not userIsInChat:
 		createChat(sender_id)
 
+def clearDB(request, sender_id):
+
+	for chat in getData(request, "chats"):
+		if chat['sender_one'] == sender_id or chat['sender_two'] == sender_id:
+			User.objects.filter(sender_id=chat['sender_one']).delete()
+			if chat['sender_two'] != None:
+				User.objects.filter(sender_id=chat['sender_two']).delete()
+				
+			Chat.objects.filter(id=chat['id']).delete()
+
+
+
 def generateMessage(request, message):
 	another_user_id = getConnection(request, message['sender']['id'])
 	if another_user_id == None:

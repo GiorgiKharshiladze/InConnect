@@ -26,10 +26,13 @@ class InConnectBotView(generic.View):
 					# Print the message to the terminal
 					pprint(message)
 					# Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
-					# are sent as attachments and must be handled accordingly. 
-					addUser(request, message['sender']['id'], message['message']['text'])
-					addUserChat(request, message)
-					generateMessage(request, message)
+					# are sent as attachments and must be handled accordingly.
+					if incoming_message.lower() == "next":
+						clearDB(request, message['sender']['id'])
+					else:
+						addUser(request, message['sender']['id'], message['message']['text'])
+						addUserChat(request, message)
+						generateMessage(request, message)
 
 		return HttpResponse()
 
