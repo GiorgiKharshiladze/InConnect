@@ -8,7 +8,7 @@ urlpatterns = [
 	url(r'^suggestions/$', views.SuggestionList.as_view(), name="suggestions"),
 	url(r'^users/$', views.UserList.as_view(), name="users"),
 	url(r'^messages/$', views.MessageList.as_view(), name="messages"),
-	url(r'^chat/$', views.InConnectBotView.as_view(), name="chat")
+	url(r'^chat/?$', views.InConnectBotView.as_view(), name="chat")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

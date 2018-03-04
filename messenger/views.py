@@ -14,7 +14,7 @@ from rest_framework import status
 
 from messenger.serializers import *
 
-VERIFY_TOKEN = 'MY_TOKEN_InConnect'
+VERIFY_TOKEN = '12345678'
 class InConnectBotView(generic.View):
 
 	def get(self, request, *args, **kwargs):
