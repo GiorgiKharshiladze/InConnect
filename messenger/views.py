@@ -27,7 +27,7 @@ class InConnectBotView(generic.View):
 					pprint(message)
 					# Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
 					# are sent as attachments and must be handled accordingly.
-					if message['message']['text'].lower() == "End Conversation":
+					if message['message']['text'] == "End Conversation":
 						clearDB(request, message['sender']['id'])
 					else:
 						addUser(request, message['sender']['id'], message['message']['text'])
