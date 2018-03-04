@@ -32,8 +32,8 @@ class User(models.Model):
 class Chat(models.Model):
 	
 	id 				= models.AutoField(max_length = 30, primary_key = True)
-	sender_one 		= models.CharField(max_length = 255)
-	sender_two 		= models.CharField(max_length = 255)
+	sender_one 		= models.CharField(max_length = 255, null=True)
+	sender_two 		= models.CharField(max_length = 255, null=True)
 	topic 			= models.CharField(max_length = 255, null=True)
 	status			= models.BooleanField(default=False)
 	created_at 		= models.DateTimeField(auto_now_add=True, null=True)
