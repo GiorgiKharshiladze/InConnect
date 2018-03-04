@@ -105,10 +105,17 @@ def getConnection(request, sender_id):
 
 	return None
 
+def generateTemplate(type, fbid, received_message):
+
+	if type == "menu":
+		pass
+	elif type == "reply":
+		return json.dumps({"recipient":{"id":fbid},"message":{"text":received_message,"quick_replies":[{"content_type":"text","title":"End Conversation","payload":"End Conversation"}]}})
+
 # # This function should be outside the BotsView class
-def sendMessage(fbid, recieved_message):
+def sendMessage(fbid, received_message):
 	# Remove all punctuations, lower case the text and split it based on space
-	tokens = re.sub(r"[^a-zA-Z0-9\s]",' ',recieved_message).lower().split()
+	tokens = re.sub(r"[^a-zA-Z0-9\s]",' ',received_message).lower().split()
 	# joke_text = ''
 	# for token in tokens:
 	# 	if token in jokes:
@@ -122,6 +129,6 @@ def sendMessage(fbid, recieved_message):
 	user_details = requests.get(user_details_url, user_details_params).json()
 
 	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
-	response_msg = json.dumps({"recipient":{"id":fbid},"message":{"text":"rame","quick_replies":[{"content_type":"text","title":"Next Image","payload":"gio"}, {"content_type":"text","title":"Next Move","payload":"giorgi"}]}}) #"message":{"text":recieved_message}})
+	response_msg = generateTemplate("reply", fbid, received_message) #"message":{"text":received_message}})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
