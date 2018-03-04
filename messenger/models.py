@@ -29,19 +29,34 @@ class User(models.Model):
 	class Meta:
 		db_table = "users" # Table name in DB
 
-
-class Message(models.Model):
-
+class Chat(models.Model):
+	
 	id 				= models.AutoField(max_length = 30, primary_key = True)
-	chat_id			= models.IntegerField(unique = True)
 	sender_one 		= models.CharField(max_length = 255)
 	sender_two 		= models.CharField(max_length = 255)
-	message 		= models.TextField(null=True)
+	topic 			= models.CharField(max_length = 255, null=True)
+	status			= models.BooleanField(default=False)
 	created_at 		= models.DateTimeField(auto_now_add=True, null=True)
 	updated_at 		= models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self): # Value that we see in DJANGO ADMIN
-		return "Chat_Id: " + str(self.chat_id) + " Message: " + message
+		return "Chat_Id: " + str(self.id) + " - " + self.sender_one + " and " + self.sender_two
 
 	class Meta:
-		db_table = "messages" # Table name in DB
+		db_table = "chats" # Table name in DB
+
+# class Message(models.Model):
+
+# 	id 				= models.AutoField(max_length = 30, primary_key = True)
+# 	chat_id			= models.IntegerField(unique = True)
+# 	sender_one 		= models.CharField(max_length = 255)
+# 	sender_two 		= models.CharField(max_length = 255)
+# 	message 		= models.TextField(null=True)
+# 	created_at 		= models.DateTimeField(auto_now_add=True, null=True)
+# 	updated_at 		= models.DateTimeField(auto_now=True, null=True)
+
+	# def __str__(self): # Value that we see in DJANGO ADMIN
+	# 	return "Chat_Id: " + str(self.chat_id) + " Message: " + message
+
+	# class Meta:
+	# 	db_table = "messages" # Table name in DB

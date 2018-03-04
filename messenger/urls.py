@@ -7,7 +7,7 @@ urlpatterns = [
 	url(r'^result/$', views.api, name='result'),
 	url(r'^suggestions/$', views.SuggestionList.as_view(), name="suggestions"),
 	url(r'^users/$', views.UserList.as_view(), name="users"),
-	url(r'^messages/$', views.MessageList.as_view(), name="messages"),
+	url(r'^chats/$', views.ChatList.as_view(), name="messages"),
 	url(r'^chat/?$', views.InConnectBotView.as_view(), name="chat")
 ]
 

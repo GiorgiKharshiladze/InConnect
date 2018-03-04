@@ -22,7 +22,7 @@ def getData(request, typeOf):
 	data		= json.loads(jsonurl.read())
 	return data
 
-def response(request, sender_id, sender_response):
+def addUser(request, sender_id, sender_response):
 	isIn = False
 	for user in getData(request, "users"):
 		if user['sender_id'] == sender_id:
@@ -32,7 +32,12 @@ def response(request, sender_id, sender_response):
 		new_user = User(sender_id=sender_id, topic=sender_response)
 		new_user.save()
 
+# def addUserChat(request, message):
 
+# 	for chat in getData(request, "chats"):
+# 		if chat['status'] == False:
+# 			# ar dagaviwydes TOPIC
+# 			chat['sender_two'] = message['sender']['id']
 
 
 
@@ -69,6 +74,18 @@ def post_facebook_message(fbid, recevied_message):
 	response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":joke_text}})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
+
+def getConnection(sender_id):
+
+	for chat in getData(request, "chats"):
+		if chat['sender_one'] == sender_id:
+			return chat['sender_two']
+		elif chat['sender_two'] == sender_id:
+			return chat['sender_one']
+
+	return None
+
+
 def generate_message(request, message):
 	another_user_id = getConnection(message['sender']['id'])
 	if another_user_id == None:
@@ -103,6 +120,8 @@ class InConnectBotView(generic.View):
 					# Assuming the sender only sends text. Non-text messages like stickers, audio, pictures
 					# are sent as attachments and must be handled accordingly. 
 					# post_facebook_message(message['sender']['id'], message['message']['text'])
+					addUser(request, message['sender']['id'], message['message']['text'])
+					addUserChat(request, message)
 					generate_message(request, message)
 					# post_facebook_message(message['sender']['id'], response(request, message['sender']['id'], message['message']['text']))
 
@@ -140,12 +159,12 @@ class UserList(APIView):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class MessageList(APIView):
+class ChatList(APIView):
 	"""
-	List all the messages as a RESTapi
+	List all the chats as a RESTapi
 	"""
 	def get(self, request):
-		messages = MessageModel.objects.all() # CourseModel located in serializers
-		serializer = MessageSerializer(messages, many = True)
+		chats = ChatModel.objects.all() # CourseModel located in serializers
+		serializer = ChatSerializer(chats, many = True)
 
 		return Response(serializer.data)
