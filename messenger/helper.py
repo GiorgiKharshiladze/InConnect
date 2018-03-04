@@ -108,21 +108,15 @@ def getConnection(request, sender_id):
 def generateTemplate(type, fbid, received_message):
 
 	if type == "menu":
-		pass
+		return json.dumps({"persistent_menu":[{"locale":"default","composer_input_disabled":true,"call_to_actions":[{"title":"My Account","type":"nested","call_to_actions":[{"title":"Pay Bill","type":"postback","payload":"PAYBILL_PAYLOAD"},{"title":"History","type":"postback","payload":"HISTORY_PAYLOAD"},{"title":"Contact Info","type":"postback","payload":"CONTACT_INFO_PAYLOAD"}]},{"type":"web_url","title":"Latest News","url":"http://www.messenger.com/","webview_height_ratio":"full"}]},{"locale":"zh_CN","composer_input_disabled":false,"call_to_actions":[{"title":"Pay Bill","type":"postback","payload":"PAYBILL_PAYLOAD"}]}]})
 	elif type == "reply":
 		return json.dumps({"recipient":{"id":fbid},"message":{"text":received_message,"quick_replies":[{"content_type":"text","title":"End Conversation","payload":"End Conversation"}]}})
 
 # # This function should be outside the BotsView class
 def sendMessage(fbid, received_message):
 	# Remove all punctuations, lower case the text and split it based on space
-	tokens = re.sub(r"[^a-zA-Z0-9\s]",' ',received_message).lower().split()
-	# joke_text = ''
-	# for token in tokens:
-	# 	if token in jokes:
-	# 		joke_text = random.choice(jokes[token])
-	# 		break
-	# if not joke_text:
-	# 	joke_text = "I didn't understand! Send 'stupid', 'fat', 'dumb' for a Yo Mama joke!"
+	
+	get_started_data = json.dumps({"setting_type":"call_to_actions","thread_state":"new_thread","call_to_actions":[{"payload":"get_started"}]})
 	
 	user_details_url = "https://graph.facebook.com/v2.6/%s"%fbid
 	user_details_params = {'fields':'first_name,last_name,profile_pic', 'access_token':PAGE_ACCESS_TOKEN}
@@ -130,5 +124,6 @@ def sendMessage(fbid, received_message):
 
 	post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s'%PAGE_ACCESS_TOKEN
 	response_msg = generateTemplate("reply", fbid, received_message) #"message":{"text":received_message}})
+	status_get_started = requests.post(post_message_url, headers={"Content-Type": "application/json", data = get_started_data})
 	status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 	# pprint(status.json())
