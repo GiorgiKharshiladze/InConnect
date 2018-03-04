@@ -28,39 +28,44 @@ def getData(request, type_of):
 	return data
 
 def getTopic(sender_id):	
-	my_user = User.object.get(sender_id = sender_id)
-	return my_user['topic']
+	my_user = User.objects.get(sender_id = sender_id)
+	return my_user.topic
 
 def setChatUser(chat_id, sender_two_id):
-	my_chat = Chat.object.get(id=chat_id)
-	my_chat['sender_two'] = sender_two_id
-	my_chat.save()
+	my_chat = Chat.objects.filter(id=chat_id)
+	my_chat.update(sender_two = sender_two_id, status=True)
 
 def createChat(sender_one_id):
 	topic = getTopic(sender_one_id)
 	new_chat = Chat(sender_one=sender_one_id, topic=topic)
 	new_chat.save()
 
-def addUser(request, sender_id, sender_response):
-	isIn = False
+def isIn(request, sender_id):
 	for user in getData(request, "users"):
 		if user['sender_id'] == sender_id:
-			isIn = True
+			return True
+	return False
 
-	if not isIn:
+def addUser(request, sender_id, sender_response):
+
+	if not isIn(request, sender_id):
 		new_user = User(sender_id=sender_id, topic=sender_response)
 		new_user.save()
 
 def addUserChat(request, message):
 
 	sender_id = message['sender']['id']
+	userIsInChat = False
 
 	for chat in getData(request, "chats"):
-		if chat['status'] == False and getTopic(sender_id) == chat['topic']:
+		if chat['status'] == False and getTopic(sender_id) == chat['topic'] and chat['sender_one'] != sender_id:
+			if chat['sender_one'] == sender_id:
+				userIsInChat = True
 			setChatUser(chat['id'], sender_id)
-			break
+			return
 
-	createChat(sender_id)
+	if not userIsInChat:
+		createChat(sender_id)
 
 def generateMessage(request, message):
 	another_user_id = getConnection(request, message['sender']['id'])

@@ -40,10 +40,10 @@ class Chat(models.Model):
 	updated_at 		= models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self): # Value that we see in DJANGO ADMIN
-		return "Chat_Id: " + str(self.id) + " - " + self.sender_one + " and " + self.sender_two
-
+		return "Chat_Id: " + str(self.id)
 	class Meta:
 		db_table = "chats" # Table name in DB
+
 
 # class Message(models.Model):
 
