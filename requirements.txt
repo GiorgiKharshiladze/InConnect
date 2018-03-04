@@ -1,4 +1,3 @@
 -r requirements-dev.txt
-rest_framework
 gunicorn
 psycopg2
