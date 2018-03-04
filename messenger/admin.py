@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Suggestion
+from .models import Suggestion, User, Message
 
-admin.register(Suggestion)(admin.ModelAdmin)
+admin.register(Suggestion, User, Message)(admin.ModelAdmin)

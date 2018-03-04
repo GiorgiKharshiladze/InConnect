@@ -24,7 +24,7 @@ class User(models.Model):
 	updated_at 		= models.DateTimeField(auto_now=True, null=True)
 
 	def __str__(self): # Value that we see in DJANGO ADMIN
-		return str(self.id) + ": " +self.sender_id + " (" + topic + ")"
+		return str(self.id) + ": " +self.sender_id + " (" + self.topic + ")"
 
 	class Meta:
 		db_table = "users" # Table name in DB
